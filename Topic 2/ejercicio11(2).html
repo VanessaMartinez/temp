@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+    <title>Globant :: Welcome to the HTML5 bootcamp</title>
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
+    <script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
+  </head>
+  <body>
+    <div data-role="page">
+      <div data-role="header">
+        <h1>Movies</h1>
+      </div>
+      <div data-role="content">	
+        <p>Press "search" to get the list of movies available.</p>	
+        <input type="button" id="search" value="Search">
+        <ul data-role="listview" id="list"></ul>	
+      </div>
+      <div data-role="footer">
+        <p>End</p>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    $(document).ready(
+      function(){
+        $('#search').click( function() {
+          $.ajax({
+            type: 'GET',
+            url:'http://bootcamp.aws.af.cm/movies',
+            dataType:'json',
+            success: function(data) {
+              console.log(data);
+              capturingMovies(data);
+            },
+            error: function(data) {
+              console.log(data);
+            },
+          }); 
+        })
+      }
+    );
+    function capturingMovies(data){
+      var list="";
+      for(i=0;i<data.d.results.length;i++){
+        list=list+'<li><a href="#"><img src="'+data.d.results[i].BoxArt.SmallUrl+'">'+data.d.results[i].Name+'. '+data.d.results[i].ReleaseYear+'. '+data.d.results[i].Synopsis+'</a></li>';
+      }
+      $('#list').html(list);
+      $('#list').listview('refresh');
+    }
+  </script>
+</html>
+ 						 		  
